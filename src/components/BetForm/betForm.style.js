@@ -62,7 +62,11 @@ export const Button = styled.button`
   max-width: 200px;
   padding: 10px 20px;
   background: linear-gradient(90deg, #FFE259 15.1%, #FFA751 85.42%);
+  transition: all .3s;
   ${({disabled}) => disabled && css`
     filter: grayscale(100%);
   `}
+  &:hover {
+    box-shadow: 0 0 20px #ffffff4d;
+  }
 `;
