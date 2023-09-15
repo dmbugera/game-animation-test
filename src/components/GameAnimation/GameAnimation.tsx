@@ -33,7 +33,7 @@ export default function GameAnimation({ gameState, gameResult, numberOfCoins, co
           <Coin
             // key={item.id}
             state={coinState}
-            status={GameAnimationState[gameState].toString()}
+            status={gameState}
             result={gameResult?.simulationResult[index]}
           />
         ))}

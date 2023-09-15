@@ -1,12 +1,19 @@
 // @ts-nocheck
-import React, { useState, useMemo, useEffect, isValidElement } from 'react';
+import React, { useState, useEffect } from 'react';
 import CoinToss, { EventEmit, BetResultEvent, GameResultEvent } from '../contract/coinToss';
-import { GameContainer, SettingsContainer, SettingsSection, AnimationContainer } from './coinToss.style';
+import {
+  GameContainer,
+  SettingsContainer,
+  SettingsSection,
+  AnimationContainer,
+  AnimatedTitle,
+} from './coinToss.style';
 import GameAnimation from './GameAnimation';
 import GameHistory from './GameHistory';
 import BetForm from './BetForm';
 import BetHistory from './BetHistory';
 import AnimatedBackground from './AnimatedBackground';
+
 
 export enum GameAnimationState {
     IDLE = 0,
@@ -16,6 +23,8 @@ export enum GameAnimationState {
     ERROR = 4,
     LOADING =  5
 }
+
+const resultDelay = 5000;
 
 export default function CoinTossUx({}) {
 
@@ -43,15 +52,17 @@ export default function CoinTossUx({}) {
         setGameAnimationState(GameAnimationState.IDLE);
     }
 
-    const callbackHandler = (event: EventEmit) => {
+    const callbackHandler = async (event: EventEmit) => {
         if (event.eventType == 'GameResult') {
             console.log('GameResult received:')
             console.log(event.eventObject)
             triggerResultingState(event.eventObject);
+            await new Promise((resolve) => setTimeout(resolve, 3000));
             addToGameHistory(event.eventObject);
         } else if (event.eventType == 'BetResult') {
             console.log('BetResult received:')
             console.log(event.eventObject);
+            await new Promise((resolve) => setTimeout(resolve, 3000));
             addToBetHistory(event.eventObject);
         } else {
             console.log('Unknown EventEmit received:')
@@ -84,12 +95,12 @@ export default function CoinTossUx({}) {
     return (
         <AnimatedBackground>
             <div className="">
-                <h1>Coin Toss</h1>
+                <AnimatedTitle>Coin Toss</AnimatedTitle>
             </div>
             <GameContainer>
                 <AnimationContainer>
                   <GameAnimation
-                    gameState={gameAnimationState}
+                    gameState={GameAnimationState[gameAnimationState].toString()}
                     gameResult={lastGameResultEvent}
                     numberOfCoins={numberOfCoins}
                     coinState={side}
@@ -104,6 +115,7 @@ export default function CoinTossUx({}) {
                       numberOfCoins={numberOfCoins}
                       setSide={setSide}
                       side={side}
+                      gameState={GameAnimationState[gameAnimationState].toString()}
                     />
                   </SettingsSection>
                   <SettingsSection>

@@ -2,7 +2,7 @@ import styled, { keyframes, css } from 'styled-components';
 import headsBg from '../../static/heads.png'
 import tailsBg from '../../static/tails.png'
 
-const flip = keyframes`
+const flipHeads = keyframes`
   0% {
     transform: rotateX(0deg);
   }
@@ -14,7 +14,19 @@ const flip = keyframes`
   }
 `;
 
-const spinHeadsFromHeads = keyframes`
+const flipTails = keyframes`
+  0% {
+    transform: rotateX(180deg);
+  }
+  50% {
+    transform: rotateX(360deg);
+  }
+  100%{
+    transform: rotateX(540deg);
+  }
+`;
+
+const spinHeads = keyframes`
   0%{
     transform: rotateX(0);
   }
@@ -23,17 +35,8 @@ const spinHeadsFromHeads = keyframes`
   }
 `;
 
-const spinHeadsFromTails = keyframes`
-  0%{
-    transform: rotateX(180deg);
-  }
-  100%{
-    transform: rotateX(720deg);
-  }
-`;
 
-
-const spinTailsFromHeads = keyframes`
+const spinTails = keyframes`
   0%{
     transform: rotateX(0);
   }
@@ -43,12 +46,30 @@ const spinTailsFromHeads = keyframes`
 `;
 
 
-const spinTailsFromTails = keyframes`
-  0%{
-    transform: rotateX(180deg);
+const slide = keyframes`
+  0%, 100%{
+    left: -60px;
   }
-  100%{
-    transform: rotateX(900deg);
+  50%{
+    left: 100%;
+  }
+`;
+
+const shineHeads = keyframes`
+  0%, 66% {
+    box-shadow:0 0 50px #ffff0080;
+  }
+  33%, 100% {
+    box-shadow:0 0 0 #ffff0080;
+  }
+`;
+
+const shineTails = keyframes`
+  0%, 66% {
+    box-shadow:0 0 50px #ffffff80;
+  }
+  33%, 100% {
+    box-shadow:0 0 0 #ffffff80;
   }
 `;
 
@@ -61,19 +82,18 @@ export const CoinBody = styled.div`
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   &.flipping {
-    animation: ${flip} 1s forwards infinite;
-  }
-  &.heads {
-    animation: ${spinHeadsFromHeads} 5s forwards;
     ${({ betResult }) => betResult === 0 && css`
-        animation: ${spinHeadsFromHeads} 5s forwards;
+        animation: ${flipHeads} 1s forwards infinite;
     `}
     ${({ betResult }) => betResult === 1 && css`
-        animation: ${spinHeadsFromTails} 5s forwards;
+        animation: ${flipTails} 1s forwards infinite;
     `}
   }
+  &.heads {
+    animation: ${spinHeads} 5s forwards;
+  }
   &.tails {
-    animation: ${spinTailsFromHeads} 5s forwards;
+    animation: ${spinTails} 5s forwards;
   }
   ${({ betResult }) => betResult === 1 && css`
     transform: rotateX(180deg);
@@ -95,11 +115,33 @@ export const CoinSide = styled.div`
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   background-size: cover;
+  border-radius: 50%;
+  overflow: hidden;
+  &:before {
+    content: '';
+    position: absolute;
+    background: #ffffff4d;
+    height: 100%;
+    width: 50px;
+    left: -60px;
+    transform: skewX(-30deg);
+  }
   &.heads {
     background-image: url(${headsBg});
   }
   &.tails {
     transform: rotateX(180deg);
     background-image: url(${tailsBg});
+  }
+  &.result {
+    &.heads {
+      animation: ${shineHeads} 2s;
+    }
+    &.tails {
+      animation: ${shineTails} 2s;
+    }
+    &:before {
+      animation: ${slide} 1s;
+    }
   }
 `;

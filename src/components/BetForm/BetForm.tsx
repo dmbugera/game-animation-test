@@ -3,7 +3,15 @@ import React, { useMemo, useState } from "react";
 import RangeSlider from 'react-bootstrap-range-slider';
 import { FormContainer, FormItem, Button, FormSection } from './betForm.style';
 
-function BetForm({game, triggerAwaitingState, setNumberOfCoins, numberOfCoins, setSide, side}) {
+function BetForm({
+  game,
+  triggerAwaitingState,
+  setNumberOfCoins,
+  numberOfCoins,
+  setSide,
+  side,
+  gameState,
+}) {
 
   const [wager, setWager] = useState(1);
   const [numberCorrect, setNumberCorrect] = useState(1);
@@ -12,6 +20,7 @@ function BetForm({game, triggerAwaitingState, setNumberOfCoins, numberOfCoins, s
   const [potentialPayout, setPotentialPayout] = useState(0);
   const [validBet, setValidBet] = useState(false);
   const [invalidReason, setInvalidReason] = useState(null);
+  const isDisabled = gameState !== 'IDLE';
 
   const placeBet = async () => {
     game.placeBet(
@@ -95,6 +104,7 @@ function BetForm({game, triggerAwaitingState, setNumberOfCoins, numberOfCoins, s
             step={1}
             value={wager}
             onChange={updateWager}
+            disabled={isDisabled}
           />
         </FormItem>
 
@@ -110,6 +120,7 @@ function BetForm({game, triggerAwaitingState, setNumberOfCoins, numberOfCoins, s
             placeholder="true"
             checked={side==0}
             onChange={updateSide}
+            disabled={isDisabled}
           />
         </FormItem>
 
@@ -124,6 +135,7 @@ function BetForm({game, triggerAwaitingState, setNumberOfCoins, numberOfCoins, s
             step="1"
             value={numberOfCoins}
             onChange={updateNumberOfCoins}
+            disabled={isDisabled}
           />
         </FormItem>
       </FormSection>
@@ -139,6 +151,7 @@ function BetForm({game, triggerAwaitingState, setNumberOfCoins, numberOfCoins, s
             step="1"
             value={numberCorrect}
             onChange={updateNumberCorrect}
+            disabled={isDisabled}
           />
         </FormItem>
 
@@ -175,7 +188,7 @@ function BetForm({game, triggerAwaitingState, setNumberOfCoins, numberOfCoins, s
         <FormItem>
           <Button
             onClick={validBet ? placeBet : ()=>{}}
-            disabled={!validBet }
+            disabled={!validBet || isDisabled}
           >
             Place Bet
           </Button>
