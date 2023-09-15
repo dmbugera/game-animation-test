@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const FormItem = styled.div`
   display: flex;
@@ -62,4 +62,7 @@ export const Button = styled.button`
   max-width: 200px;
   padding: 10px 20px;
   background: linear-gradient(90deg, #FFE259 15.1%, #FFA751 85.42%);
+  ${({disabled}) => disabled && css`
+    filter: grayscale(100%);
+  `}
 `;
