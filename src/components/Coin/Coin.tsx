@@ -7,7 +7,6 @@ const Coin = ({ status, result, state }: any) => {
   const [currentStatus, setCurrentStatus] = useState(status);
   const [sideClass, setSideClass] = useState('');
 
-  console.log(currentResult, "currentResult")
   useEffect(() => {
     if (status === 'AWAITING') {
       setSideClass('');

@@ -1,5 +1,6 @@
 import React from 'react';
 import { GameHistoryContainer } from './gameHistory.style';
+import { Coin, Line } from './gameHistory.style';
 
 function GameHistory({ gameHistory }: any) {
 
@@ -15,9 +16,9 @@ function GameHistory({ gameHistory }: any) {
           </div>
           : (
             gameHistory.toReversed().map((gh: any) => (
-              <div className="" key={gh.gameId}>
-                {gh.gameId} : {gh.timestamp} = {gh.simulationResult.toString()}
-              </div>
+              <Line key={gh.gameId}>
+                {gh.gameId + 1} = { gh.simulationResult.map((item: number) => <Coin className={item === 0 ? 'heads' : 'tails' } />)}
+              </Line>
             ))
           )
       }
